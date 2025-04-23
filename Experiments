@@ -1,0 +1,204 @@
+Experiment 2 and Experiment 3: (Common Widget and Layout)
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MaterialApp(
+    home: Scaffold(
+      appBar: AppBar(title: Text('My App')),
+      body: Column(
+        children: [
+          Text('Hello Flutter'),
+          TextField(),
+          ElevatedButton(
+            onPressed: () {},
+            child: Text('Press'),
+          ),
+        ],
+      ),
+    ),
+  ));
+}
+
+
+Experiment No 4: (Images, Icons, Charts)
+import 'package:flutter/material.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
+
+void main() {
+  runApp(MaterialApp(
+    home: MyUI(),
+  ));
+}
+
+class MyUI extends StatelessWidget {
+  final data = [
+    ChartData('A', 30),
+    ChartData('B', 80),
+    ChartData('C', 45),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    var series = [
+      charts.Series<ChartData, String>(
+        id: 'Marks',
+        domainFn: (ChartData d, _) => d.label,
+        measureFn: (ChartData d, _) => d.value,
+        data: data,
+      )
+    ];
+
+    return Scaffold(
+      appBar: AppBar(title: Text('Icons, Image & Chart')),
+      body: Column(
+        children: [
+          Icon(Icons.star, size: 50, color: Colors.orange),
+          Image.network(
+            'https://flutter.dev/assets/homepage/carousel/slide_1-bg-4e2fcef708e7f2f8c8869ed2f5790e73e3fbd6b7fc3b1f2c4e91d89c5df00f9a.jpg',
+            height: 100,
+          ),
+          SizedBox(
+            height: 200,
+            child: charts.BarChart(series),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ChartData {
+  final String label;
+  final int value;
+  ChartData(this.label, this.value);
+}
+
+
+Experiment No 5: (Tab Bar)
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MaterialApp(
+    home: MyTabApp(),
+  ));
+}
+
+class MyTabApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2, // number of tabs
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('TabBar View Demo'),
+          bottom: TabBar(
+            tabs: [
+              Tab(text: 'Home'),
+              Tab(text: 'Settings'),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            Center(child: Text('This is Home')),
+            Center(child: Text('This is Settings')),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+Experiment No 6: (Widget Animation)
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MaterialApp(home: MyAnimation()));
+}
+
+class MyAnimation extends StatefulWidget {
+  @override
+  _MyAnimationState createState() => _MyAnimationState();
+}
+
+class _MyAnimationState extends State<MyAnimation> {
+  bool big = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              big = !big;
+            });
+          },
+          child: AnimatedContainer(
+            width: big ? 200 : 100,
+            height: big ? 200 : 100,
+            color: big ? Colors.red : Colors.blue,
+            duration: Duration(seconds: 1),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+Experiment No 7: (Form)
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MaterialApp(home: SimpleForm()));
+}
+
+class SimpleForm extends StatefulWidget {
+  @override
+  _SimpleFormState createState() => _SimpleFormState();
+}
+
+class _SimpleFormState extends State<SimpleForm> {
+  final _formKey = GlobalKey<FormState>();
+  String name = '';
+  String email = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Interactive Form')),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Name'),
+                onChanged: (val) => name = val,
+                validator: (val) => val!.isEmpty ? 'Enter your name' : null,
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Email'),
+                onChanged: (val) => email = val,
+                validator: (val) => val!.isEmpty ? 'Enter your email' : null,
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Form Submitted!')),
+                    );
+                  }
+                },
+                child: Text('Submit'),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
