@@ -202,3 +202,16 @@ class _SimpleFormState extends State<SimpleForm> {
     );
   }
 }
+
+Experiment No 9: (fetch,sync for making PWA work offline)
+<html> <title>
+SW example
+</title> <body>
+<h1>Service Worker</h1> <script>
+if("serviceWorker" in navigator) {
+navigator.serviceWorker.register('./sw.js').then((result)=>{ console.warn("result",result)
+}).catch(function(e){ console.warn("e",e)
+}) }else{
+console.warn("service worker not working") }
+</script> </body>
+</html>
